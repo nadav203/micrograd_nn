@@ -7,4 +7,5 @@ I plan to start by recreating the foundational code. Afterward, I’ll look for 
 References:
 
 [Andrej's Micrograd Repository](https://github.com/karpathy/micrograd)
+
 [Andrej's Micrograd Playlist](https://youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ&si=FeJvCmvhqMjxbAAs)
