@@ -18,6 +18,7 @@ class Value:
         def _backward():
             self.gradient = 1.0 * res.gradient
             other.gradient = 1.0 * res.gradient
+
         res._backward = _backward
         return res
     
@@ -27,6 +28,7 @@ class Value:
         def _backward():
             self.gradient = other.data * res.gradient
             other.gradient = self.data * res.gradient
+
         res._backward = _backward
         return res
     
@@ -36,8 +38,26 @@ class Value:
 
         def _backward():
             self.gradient = (1 - data**2) * res.gradient
+
         res._backward = _backward
         return res
+
+    def backward(self):
+        topo_graph = []
+        visited = set()
+
+        def build_topo(vertex):
+            if vertex not in visited:
+                visited.add(vertex)
+                for child in vertex._children:
+                    build_topo(child)
+                topo_graph.append(vertex)
+
+        build_topo(self)
+        self.gradient = 1
+        for vertex in reversed(topo_graph):
+            vertex._backward()
+        # print(topo_graph)
 
     
 
@@ -52,13 +72,7 @@ if __name__ == "__main__":
     tanh = add.tanh()
     print(tanh)
     print(tanh._children)
-    tanh.gradient = 1
-    print('gradient:', add.gradient)
-    tanh._backward()
-    print('gradient:', add.gradient)
-    tanh._backward()
-    print('gradient:', add.gradient)
-    add._backward()
-    print('gradient:', test_val.gradient)
+    tanh.backward()
+    
 
     
