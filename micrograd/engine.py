@@ -52,7 +52,7 @@ class Value:
         return res
     
     def exp(self):
-        res = Value(math.exp(self.data), _children=(self, ), _operation='^')
+        res = Value(math.exp(self.data), _children=(self, ), _operation='exp')
 
         def _backward(self):
             self.grad += res.data * res.gradient
