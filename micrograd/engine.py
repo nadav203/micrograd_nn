@@ -23,6 +23,9 @@ class Value:
         res._backward = _backward
         return res
     
+    def __radd__(self, other):
+        return self + other
+    
     def __mul__(self, other):
         other = other if isinstance(other, Value) else Value(other)
         res = Value(self.data * other.data, _children=(self, other), _operation='*')
@@ -34,6 +37,10 @@ class Value:
         res._backward = _backward
         return res
     
+    def __rmul__(self, other): 
+        # other * self
+        return self * other
+
     def tanh(self):
         other = other if isinstance(other, Value) else Value(other)
         data = (math.exp(self.data * 2) - 1) / (math.exp(self.data * 2) + 1)
