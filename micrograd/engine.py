@@ -1,3 +1,5 @@
+import math
+
 class Value:
 
     def __init__(self, data, _children=(), _operation=''):
@@ -10,10 +12,15 @@ class Value:
         return f"Value: data = {self.data}"
     
     def __add__(self, other):
-        return Value(self.data + other.data, (self, other), '+')
+        return Value(self.data + other.data, _children=(self, other), _operation='+')
     
     def __mul__(self, other):
-        return Value(self.data * other.data, (self, other), '*')
+        return Value(self.data * other.data, _children=(self, other), _operation='*')
+    
+    def tanh(self):
+        data = (math.exp(self.data * 2) - 1) / (math.exp(self.data * 2) + 1)
+        return Value(data, _children=(self, ), _operation='tanh')
+
     
 
 if __name__ == "__main__":
@@ -23,5 +30,8 @@ if __name__ == "__main__":
     print(add)
     print(add._children)
     print(add._operation)
+    tanh = add.tanh()
+    print(tanh)
+    print(tanh._children)
 
     
