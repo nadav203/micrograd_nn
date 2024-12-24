@@ -4,15 +4,16 @@ class Value:
         self.data = data
         self._children = set(_children)
         self._operation = _operation
+        self.gradient = 0
     
     def __repr__(self):
         return f"Value: data = {self.data}"
     
     def __add__(self, other):
-        return Value(self.data + other.data, (self, other), 'addition')
+        return Value(self.data + other.data, (self, other), '+')
     
     def __mul__(self, other):
-        return Value(self.data * other.data, (self, other), 'multiplication')
+        return Value(self.data * other.data, (self, other), '*')
     
 
 if __name__ == "__main__":
