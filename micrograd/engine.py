@@ -42,13 +42,20 @@ class Value:
         return self * other
 
     def tanh(self):
-        other = other if isinstance(other, Value) else Value(other)
         data = (math.exp(self.data * 2) - 1) / (math.exp(self.data * 2) + 1)
         res =  Value(data, _children=(self, ), _operation='tanh')
 
         def _backward():
             self.gradient += (1 - data**2) * res.gradient
 
+        res._backward = _backward
+        return res
+    
+    def exp(self):
+        res = Value(math.exp(self.data), _children=(self, ), _operation='^')
+
+        def _backward(self):
+            self.grad += res.data * res.gradient
         res._backward = _backward
         return res
 
@@ -83,6 +90,9 @@ if __name__ == "__main__":
     print(tanh)
     print(tanh._children)
     tanh.backward()
+    a = Value(2)
+    print(a.exp())
+    
     
 
     
