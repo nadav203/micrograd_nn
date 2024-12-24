@@ -16,8 +16,8 @@ class Value:
         res = Value(self.data + other.data, _children=(self, other), _operation='+')
         
         def _backward():
-            self.gradient = 1.0 * res.gradient
-            other.gradient = 1.0 * res.gradient
+            self.gradient += 1.0 * res.gradient
+            other.gradient += 1.0 * res.gradient
 
         res._backward = _backward
         return res
@@ -26,8 +26,8 @@ class Value:
         res = Value(self.data * other.data, _children=(self, other), _operation='*')
 
         def _backward():
-            self.gradient = other.data * res.gradient
-            other.gradient = self.data * res.gradient
+            self.gradient += other.data * res.gradient
+            other.gradient += self.data * res.gradient
 
         res._backward = _backward
         return res
@@ -37,7 +37,7 @@ class Value:
         res =  Value(data, _children=(self, ), _operation='tanh')
 
         def _backward():
-            self.gradient = (1 - data**2) * res.gradient
+            self.gradient += (1 - data**2) * res.gradient
 
         res._backward = _backward
         return res
