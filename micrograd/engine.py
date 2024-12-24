@@ -13,6 +13,7 @@ class Value:
         return f"Value: data = {self.data}"
     
     def __add__(self, other):
+        other = other if isinstance(other, Value) else Value(other)
         res = Value(self.data + other.data, _children=(self, other), _operation='+')
         
         def _backward():
@@ -23,6 +24,7 @@ class Value:
         return res
     
     def __mul__(self, other):
+        other = other if isinstance(other, Value) else Value(other)
         res = Value(self.data * other.data, _children=(self, other), _operation='*')
 
         def _backward():
@@ -33,6 +35,7 @@ class Value:
         return res
     
     def tanh(self):
+        other = other if isinstance(other, Value) else Value(other)
         data = (math.exp(self.data * 2) - 1) / (math.exp(self.data * 2) + 1)
         res =  Value(data, _children=(self, ), _operation='tanh')
 
