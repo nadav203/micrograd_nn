@@ -3,15 +3,19 @@ import random
 
 class Neuron:
 
-    def __init__(self, input_num):
+    def __init__(self, input_num: int):
         def value_gen():
             return Value(random.uniform(-1,1))
         
+        if input_num <= 0:
+            raise ValueError("Number of inputs must be a positive integer")
         self.w = [value_gen() for _ in range(input_num)]
         self.bias = value_gen()
     
-    def __call__(self, x):
+    def __call__(self, x: list[float]) -> Value:
         # forward pass
+        if len(x) != len(self.w):
+            raise ValueError("Input size does not match the number of neuron inputs")
         activation = sum(w_i * x_i for w_i, x_i in zip(self.w, x)) + self.bias
         res = activation.tanh()
         return res
