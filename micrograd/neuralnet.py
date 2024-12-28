@@ -20,10 +20,12 @@ class Layer:
     
     def __init__(self, input_num, output_num):
         self.neurons = [Neuron(input_num) for _ in range(output_num)]
+    
+    def __call__(self, x):
+        return [n(x) for n in self.neurons]
+    
 
 if __name__ == "__main__":
     x = [2.0, 3.0]
-    n = Neuron(2)
+    n = Layer(2, 3)
     print(n(x))
-    layer = Layer(3, 4)
-    print(layer)
