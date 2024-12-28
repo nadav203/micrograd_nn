@@ -55,10 +55,19 @@ class Value:
         res = Value(math.exp(self.data), _children=(self, ), _operation='exp')
 
         def _backward(self):
-            self.grad += res.data * res.gradient
+            self.gradient += res.data * res.gradient
         res._backward = _backward
         return res
 
+    def __pow__(self, other):
+        assert isinstance(other, (int, float)), 'power function only supports int/float'
+        res = Value(self.data**other, (self, ), f'**{other}')
+
+        def _backward():
+            self.gradient += other * (self.data ** (other - 1)) * res.gradient
+        res._backward = _backward
+        return res
+        
     def backward(self):
         topo_graph = []
         visited = set()
