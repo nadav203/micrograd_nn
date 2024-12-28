@@ -30,6 +30,12 @@ class MLP:
         size = [input_num] + output_nums
         self.layers = [Layer(size[i], size[i + 1]) for i in range(len(output_nums))]
 
+    def __call__(self, x):
+        for layer in self.layers:
+            x = layer(x)
+        return x
+
 if __name__ == "__main__":
     x = [2.0, 3.0, -1.0]
     n = MLP(3, [4, 4, 1])
+    print(n(x))
