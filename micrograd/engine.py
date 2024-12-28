@@ -25,6 +25,12 @@ class Value:
     
     def __radd__(self, other):
         return self + other
+
+    def __neg__(self):
+        return self * -1
+    
+    def __sub__(self, other):
+        return self + (-other)
     
     def __mul__(self, other):
         other = other if isinstance(other, Value) else Value(other)
@@ -101,6 +107,9 @@ if __name__ == "__main__":
     tanh.backward()
     a = Value(2)
     print(a.exp())
+    check = Value(3)
+    subt = Value(4)
+    print(check - subt)
     
     
 
