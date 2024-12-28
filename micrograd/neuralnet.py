@@ -32,9 +32,15 @@ class Layer:
 
 class MLP:
 
-    def __init__(self, input_num, output_nums):
-        size = [input_num] + output_nums
-        self.layers = [Layer(size[i], size[i + 1]) for i in range(len(output_nums))]
+    def __init__(self, input_num: int, output_nums: list[int]):
+        if input_num <= 0:
+            raise ValueError("input_num must be a positive integer")
+        if not output_nums:
+            raise ValueError("output_nums list cannot be empty")
+        if any(out <= 0 for out in output_nums):
+            raise ValueError("All layer sizes in output_nums must be positive integers")
+        sizes = [input_num] + output_nums
+        self.layers = [Layer(sizes[i], sizes[i + 1]) for i in range(len(output_nums))]
 
     def __call__(self, x):
         for layer in self.layers:
