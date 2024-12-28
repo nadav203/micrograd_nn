@@ -22,10 +22,12 @@ class Neuron:
     
 class Layer:
     
-    def __init__(self, input_num, output_num):
+    def __init__(self, input_num: int, output_num: int):
+        if input_num <= 0 or output_num <= 0:
+            raise ValueError("input_num and output_num must be positive integers")
         self.neurons = [Neuron(input_num) for _ in range(output_num)]
     
-    def __call__(self, x):
+    def __call__(self, x: list[float]):
         return [n(x) for n in self.neurons]
 
 class MLP:
