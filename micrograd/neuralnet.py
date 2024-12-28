@@ -20,6 +20,9 @@ class Neuron:
         res = activation.tanh()
         return res
     
+    def parameters(self):
+        return self.w + [self.bias]
+    
 class Layer:
     
     def __init__(self, input_num: int, output_num: int):
@@ -31,6 +34,12 @@ class Layer:
         res = [n(x) for n in self.neurons]
         return res[0] if len(res) == 1 else res
 
+    def parameters(self):
+        params = []
+        for neuron in self.neurons:
+            params.extend(neuron.parameters())
+        return params
+    
 class MLP:
 
     def __init__(self, input_num: int, output_nums: list[int]):
@@ -47,8 +56,15 @@ class MLP:
         for layer in self.layers:
             x = layer(x)
         return x
+    
+    def parameters(self):
+        params = []
+        for layer in self.layers:
+            params.extend(layer.parameters())
+        return params
 
 if __name__ == "__main__":
     x = [2.0, 3.0, -1.0]
     n = MLP(3, [4, 4, 1])
     print(n(x))
+    print(n.parameters())
