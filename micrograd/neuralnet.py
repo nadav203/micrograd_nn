@@ -28,7 +28,8 @@ class Layer:
         self.neurons = [Neuron(input_num) for _ in range(output_num)]
     
     def __call__(self, x: list[float]):
-        return [n(x) for n in self.neurons]
+        res = [n(x) for n in self.neurons]
+        return res[0] if len(res) == 1 else res
 
 class MLP:
 
