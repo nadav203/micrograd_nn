@@ -1,7 +1,16 @@
 from engine import Value
 import random
 
-class Neuron:
+class Module:
+
+    def parameters():
+        return []
+    
+    def zero_gradient(self):
+        for param in self.parameters():
+            param.grad = 0
+
+class Neuron(Module):
 
     def __init__(self, input_num: int):
         def value_gen():
@@ -23,7 +32,7 @@ class Neuron:
     def parameters(self):
         return self.w + [self.bias]
     
-class Layer:
+class Layer(Module):
     
     def __init__(self, input_num: int, output_num: int):
         if input_num <= 0 or output_num <= 0:
@@ -37,7 +46,7 @@ class Layer:
     def parameters(self):
         return [param for neuron in self.neurons for param in neuron.parameters()]
     
-class MLP:
+class MLP(Module):
 
     def __init__(self, input_num: int, output_nums: list[int]):
         if input_num <= 0:
