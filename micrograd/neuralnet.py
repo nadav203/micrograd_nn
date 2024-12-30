@@ -2,6 +2,9 @@ from engine import Value
 import random
 
 class Module:
+    """
+    Base class for all neural network modules.
+    """
 
     def parameters():
         return []
@@ -11,8 +14,19 @@ class Module:
             param.grad = 0
 
 class Neuron(Module):
+    """
+    Represents a single neuron in a neural network layer.
+    Each neuron has its own weights and bias.
+    """
 
     def __init__(self, input_num: int):
+        """
+        Initializes the neuron with a specified number of inputs.
+        
+        Args:
+            input_num (int): The number of input connections to the neuron.
+        """
+
         def value_gen():
             return Value(random.uniform(-1,1))
         
@@ -22,7 +36,17 @@ class Neuron(Module):
         self.bias = value_gen()
     
     def __call__(self, x: list[float]) -> Value:
-        # forward pass
+        """
+        Performs the forward pass for the neuron.
+        Computes the weighted sum of inputs, adds bias, and applies the tanh activation function.
+        
+        Args:
+            x (list[float]): Input values to the neuron.
+        
+        Returns:
+            Value: The activated output of the neuron.
+        """
+
         if len(x) != len(self.w):
             raise ValueError("Input size does not match the number of neuron inputs")
         activation = sum(w_i * x_i for w_i, x_i in zip(self.w, x)) + self.bias
@@ -30,6 +54,11 @@ class Neuron(Module):
         return res
     
     def parameters(self):
+        """
+        Returns:
+            list[Value]: List containing all weights and the bias.
+        """
+        
         return self.w + [self.bias]
     
 class Layer(Module):
