@@ -58,17 +58,40 @@ class Neuron(Module):
         Returns:
             list[Value]: List containing all weights and the bias.
         """
-        
+
         return self.w + [self.bias]
     
 class Layer(Module):
-    
+    """
+    Represents a layer in the neural network, consisting of multiple neurons.
+    """
+
     def __init__(self, input_num: int, output_num: int):
+        """
+        Initializes the layer with a specified number of inputs and outputs.
+        
+        Args:
+            input_num (int): Number of inputs to a single nueron.
+            output_num (int): Number of neurons in the layer.
+        """
+
         if input_num <= 0 or output_num <= 0:
             raise ValueError("input_num and output_num must be positive integers")
         self.neurons = [Neuron(input_num) for _ in range(output_num)]
     
     def __call__(self, x: list[float]):
+        """
+        Performs the forward pass for the layer.
+        Passes the input through each neuron in the layer.
+        
+        Args:
+            x (list[float]): Input values to the layer.
+        
+        Returns:
+            Value or list[Value]: If the layer has one neuron, returns its output directly.
+                Otherwise, returns a list of outputs from all neurons.
+        """
+
         res = [n(x) for n in self.neurons]
         return res[0] if len(res) == 1 else res
 
@@ -76,8 +99,20 @@ class Layer(Module):
         return [param for neuron in self.neurons for param in neuron.parameters()]
     
 class MLP(Module):
+    """
+    Represents a Multi-Layer Perceptron (MLP) neural network.
+    Composed of multiple layers stacked sequentially.
+    """
 
     def __init__(self, input_num: int, output_nums: list[int]):
+        """
+        Initializes the MLP with a specified input size and layer configurations.
+        
+        Args:
+            input_num (int): Number of input features.
+            output_nums (list[int]): List specifying the number of neurons in each layer.
+        """
+
         if input_num <= 0:
             raise ValueError("input_num must be a positive integer")
         if not output_nums:
@@ -87,7 +122,17 @@ class MLP(Module):
         sizes = [input_num] + output_nums
         self.layers = [Layer(sizes[i], sizes[i + 1]) for i in range(len(output_nums))]
 
-    def __call__(self, x):
+    def __call__(self, x: list[float]):
+        """
+        Performs the forward pass through the entire MLP.
+        Sequentially passes the input through each layer.
+        
+        Args:
+            x (list[float]): Input data to the MLP.
+        
+        Returns:
+            list[Value]: The output from the final layer.
+        """
         for layer in self.layers:
             x = layer(x)
         return x
