@@ -10,7 +10,7 @@ class Value:
         self._backward = lambda: None
     
     def __repr__(self):
-        return f"Value: data = {self.data}"
+        return f"Value: data = {self.data}, gradient={self.gradient}"
     
     def __add__(self, other):
         other = other if isinstance(other, Value) else Value(other)
