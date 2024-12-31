@@ -9,7 +9,7 @@ class Module:
     def parameters(self):
         return []
     
-    def zero_gradient(self):
+    def zero_gradient(self) -> None:
         for param in self.parameters():
             param.gradient = 0
 
@@ -53,7 +53,7 @@ class Neuron(Module):
         res = activation.tanh()
         return res
     
-    def parameters(self):
+    def parameters(self) -> list[Value]:
         """
         Returns:
             list[Value]: List containing all weights and the bias.
@@ -95,7 +95,7 @@ class Layer(Module):
         res = [n(x) for n in self.neurons]
         return res[0] if len(res) == 1 else res
 
-    def parameters(self):
+    def parameters(self) -> list[Value]:
         return [param for neuron in self.neurons for param in neuron.parameters()]
     
 class MLP(Module):
@@ -122,7 +122,7 @@ class MLP(Module):
         sizes = [input_num] + output_nums
         self.layers = [Layer(sizes[i], sizes[i + 1]) for i in range(len(output_nums))]
 
-    def __call__(self, x: list[float]):
+    def __call__(self, x: list[float]) -> list[Value]:
         """
         Performs the forward pass through the entire MLP.
         Sequentially passes the input through each layer.
@@ -137,7 +137,7 @@ class MLP(Module):
             x = layer(x)
         return x
     
-    def parameters(self):
+    def parameters(self) -> list[Value]:
         return [param for layer in self.layers for param in layer.parameters()]
 
 if __name__ == "__main__":
