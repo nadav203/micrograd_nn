@@ -145,3 +145,7 @@ if __name__ == "__main__":
     n = MLP(3, [4, 4, 1])
     print(n(x))
     print(n.parameters())
+    n = Neuron(2)
+    x = [Value(1.0), Value(-2.0)]
+    y = n(x)
+    dot = draw_dot(y)
