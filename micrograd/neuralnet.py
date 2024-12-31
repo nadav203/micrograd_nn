@@ -11,7 +11,7 @@ class Module:
     
     def zero_gradient(self):
         for param in self.parameters():
-            param.grad = 0
+            param.gradient = 0
 
 class Neuron(Module):
     """
