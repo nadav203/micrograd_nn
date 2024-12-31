@@ -6,7 +6,7 @@ class Module:
     Base class for all neural network modules.
     """
 
-    def parameters():
+    def parameters(self):
         return []
     
     def zero_gradient(self):
@@ -148,4 +148,3 @@ if __name__ == "__main__":
     n = Neuron(2)
     x = [Value(1.0), Value(-2.0)]
     y = n(x)
-    dot = draw_dot(y)
