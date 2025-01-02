@@ -93,7 +93,7 @@ class Layer(Module):
         """
 
         res = [n(x) for n in self.neurons]
-        return res[0] if len(res) == 1 else res
+        return res
 
     def parameters(self) -> list[Value]:
         return [param for neuron in self.neurons for param in neuron.parameters()]
