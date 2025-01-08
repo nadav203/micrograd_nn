@@ -78,30 +78,31 @@ def train(model: MLP, data: list[tuple[float, float]], epochs: int = 1000, lr: f
     return losses
 
 
-def plot_loss(losses: list) -> None:
+def plot_loss(losses: list, lr: float, layers: list[int], epochs: int) -> None:
     """
-    Plots the training loss over epochs.
-
-    Args:
-        losses (List[float]): Loss values to plot.
+    Plots the training loss over epochs, including learning rate and model info in the title.
     """
     plt.figure(figsize=(10, 5))
-    plt.plot(losses, label='Training Loss')
+    plt.plot(losses, label='Training Loss', color='blue')
     plt.xlabel('Epoch')
     plt.ylabel('MSE Loss')
-    plt.title('Training Loss Over Epochs')
+    # Include learning rate, MLP architecture, and number of epochs in the title
+    plt.title(
+        f'Training Loss Over {epochs} Epochs\n'
+        f'Learning Rate: {lr}, MLP Layers: {layers}'
+    )
     plt.legend()
     plt.grid(True)
     plt.show()
 
-
-def plot_predictions(model: MLP, data: list[tuple[float, float]]) -> None:
+def plot_predictions(model: MLP, 
+                     data: list[tuple[float, float]], 
+                     lr: float, 
+                     layers: list[int], 
+                     epochs: int) -> None:
     """
-    Plots the model's predictions against actual data.
-
-    Args:
-        model (MLP): The trained neural network model.
-        data (List[Tuple[float, float]]): The dataset to evaluate.
+    Plots the model's predictions against actual data, 
+    with learning rate, model info, and epochs included in the title.
     """
     x_vals = [x for x, _ in data]
     y_true = [y for _, y in data]
@@ -118,23 +119,29 @@ def plot_predictions(model: MLP, data: list[tuple[float, float]]) -> None:
     plt.plot(x_sorted, y_pred_sorted, label='Model Prediction', color='red')
     plt.xlabel('x')
     plt.ylabel('sin(x)')
-    plt.title('Model Predictions vs Actual Data')
+    # Include learning rate, MLP architecture, and number of epochs in the title
+    plt.title(
+        f'Model Predictions vs. Actual Data\n'
+        f'Learning Rate: {lr}, MLP Layers: {layers}, Trained for {epochs} Epochs'
+    )
     plt.legend()
     plt.grid(True)
     plt.show()
 
-
 def main():
+    # Hyperparameters / model config
+    lr = 0.9
+    epochs = 1000
+    layer_sizes = [10, 1]  # MLP hidden layers and output layer
+
     data = generate_data(n_samples=100)
-    # Initialize model
-    model = MLP(input_num=1, output_nums=[10, 1])
-    # Train the model
+    model = MLP(input_num=1, output_nums=layer_sizes)
+
     print("Starting training...")
-    losses = train(model, data, epochs=1000, lr=0.1)
-    plot_loss(losses)
-    plot_predictions(model, data)
+    losses = train(model, data, epochs=epochs, lr=lr)
 
-
+    plot_loss(losses, lr=lr, layers=layer_sizes, epochs=epochs)
+    plot_predictions(model, data, lr=lr, layers=layer_sizes, epochs=epochs)
 
 if __name__ == "__main__":
     main()
