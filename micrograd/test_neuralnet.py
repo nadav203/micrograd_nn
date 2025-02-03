@@ -130,7 +130,7 @@ def plot_predictions(model: MLP,
 
 def main():
     # Hyperparameters / model config
-    lr = 0.9
+    lr = 0.1
     epochs = 1000
     layer_sizes = [10, 1]  # MLP hidden layers and output layer
 
