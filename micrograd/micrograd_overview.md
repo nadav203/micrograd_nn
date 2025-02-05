@@ -34,3 +34,76 @@ This module implements a compact neural network framework using the `Value` clas
 - **MLP (Multi-Layer Perceptron):** A composition of multiple layers where data propagates sequentially through each layer.
 
 ---
+
+# 3. test_neuralnet.py – Training the Neural Network
+
+In this script, we implement a standard supervised learning approach to train our neural network. Here’s an overview of the process:
+
+## Training Workflow
+
+- **Dataset Generation:**  
+  We generate a dataset of noisy sine (`sin(x)`) values to serve as our training examples.
+
+- **Loss Function:**  
+  The model’s performance is measured using the Mean Squared Error (MSE).
+
+- **Training Loop:**  
+  For each training epoch, the following steps are executed:
+  
+  - **Forward Propagation:**  
+    The input data is fed through the network.
+    
+  - **Loss Calculation:**  
+    MSE is computed based on the network’s output.
+    
+  - **Backpropagation:**  
+    We call `backward()` to compute gradients for each parameter.
+    
+  - **Parameter Update:**  
+    We update the weights using gradient descent with the update rule:
+    ```python
+    param.data -= learning_rate * param.gradient
+    ```
+    
+  - **Resetting Gradients:**  
+    After each update, gradients are cleared to prepare for the next iteration.
+
+## Training Results
+
+### Loss Reduction Over Epochs
+
+![Loss Reduction Over Epochs](images/image_1.png)
+
+- At the start, the loss decreases rapidly, showing that the network is quickly learning the underlying pattern.
+- As training continues, the loss reduction becomes more gradual, reflecting the fine-tuning of the network’s parameters.
+
+### Model Predictions vs. Actual Data
+
+![Model Predictions vs. Actual Data](images/image_2.png)
+
+- The red curve represents the network’s predictions, while the blue dots indicate the actual noisy sine data.
+- The close match between the predictions and the actual data demonstrates that the network has effectively learned the sine function.
+
+---
+
+# 4. Impact of Learning Rate Adjustments
+
+### Lowering the Learning Rate (0.1 → 0.01)
+
+![Lower Learning Rate Effect](images/image_3.png)
+
+- With a reduced learning rate, the parameter updates are smaller, which slows down convergence.
+- Within the same number of epochs, the model appears underfitted and does not fully capture the sine wave structure.
+
+### Raising the Learning Rate (0.1 → 0.9)
+
+![High Learning Rate - Initial Behavior](images/image_4.png)
+
+- A higher learning rate leads to larger parameter adjustments, resulting in a sharp initial drop in loss.
+- However, this also introduces significant oscillations in the loss values.
+
+![High Learning Rate - Final Predictions](images/image_5.png)
+
+- Although the network still manages to capture the general sine pattern, the higher learning rate causes the model to overfit, capturing too much of the noise present in the training data.
+
+---
